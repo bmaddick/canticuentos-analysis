@@ -1,0 +1,1383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Canticuentos Colombia — Royalty Forensic Analysis 2025</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,400;0,500;1,400&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,600;0,9..144,700;1,9..144,300;1,9..144,600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0d0e0f;
+    --surface: #141618;
+    --surface2: #1c1f22;
+    --border: #2a2d31;
+    --border-light: #3a3d42;
+    --text: #e8e6e1;
+    --text-muted: #7a7d82;
+    --text-dim: #4a4d52;
+    --accent: #c8a96e;
+    --accent-dim: #7a6540;
+    --red: #e05555;
+    --red-dim: #5c2020;
+    --red-bg: #1e1212;
+    --orange: #e08c3a;
+    --orange-dim: #5c3a14;
+    --orange-bg: #1e1508;
+    --yellow: #d4b84a;
+    --yellow-dim: #5a4c1a;
+    --yellow-bg: #1c1a08;
+    --green: #5ab87a;
+    --green-dim: #1f4a2f;
+    --green-bg: #0c1812;
+    --blue: #5a8fd4;
+    --mono: 'DM Mono', monospace;
+    --serif: 'Fraunces', Georgia, serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--mono);
+    font-size: 13px;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* ─── HEADER ─── */
+  .header {
+    padding: 60px 48px 48px;
+    border-bottom: 1px solid var(--border);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .header::before {
+    content: '';
+    position: absolute;
+    top: -80px; right: -80px;
+    width: 400px; height: 400px;
+    background: radial-gradient(circle, rgba(200,169,110,0.06) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .header-meta {
+    font-size: 11px;
+    color: var(--text-muted);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+
+  .header h1 {
+    font-family: var(--serif);
+    font-size: clamp(28px, 4vw, 52px);
+    font-weight: 700;
+    color: var(--text);
+    line-height: 1.1;
+    margin-bottom: 10px;
+  }
+
+  .header h1 em {
+    font-style: italic;
+    color: var(--accent);
+    font-weight: 300;
+  }
+
+  .header-sub {
+    font-family: var(--serif);
+    font-size: 16px;
+    font-weight: 300;
+    font-style: italic;
+    color: var(--text-muted);
+    margin-bottom: 32px;
+  }
+
+  .header-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .pill {
+    padding: 5px 14px;
+    border-radius: 2px;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    border: 1px solid;
+  }
+  .pill-acc { border-color: var(--accent-dim); color: var(--accent); background: rgba(200,169,110,0.06); }
+  .pill-red { border-color: var(--red-dim); color: var(--red); background: rgba(224,85,85,0.06); }
+  .pill-neutral { border-color: var(--border); color: var(--text-muted); }
+
+  /* ─── ALERT BANNER ─── */
+  .alert-banner {
+    margin: 0;
+    padding: 20px 48px;
+    background: var(--red-bg);
+    border-bottom: 2px solid var(--red-dim);
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .alert-icon {
+    font-size: 18px;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  .alert-banner p {
+    font-size: 13px;
+    color: var(--red);
+    line-height: 1.5;
+  }
+
+  .alert-banner strong { font-weight: 500; }
+
+  /* ─── LAYOUT ─── */
+  .main {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 48px 80px;
+  }
+
+  .section {
+    margin-top: 56px;
+  }
+
+  .section-label {
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  /* ─── KPI GRID ─── */
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    margin-top: 20px;
+  }
+
+  .kpi {
+    background: var(--surface);
+    padding: 24px 24px 20px;
+    position: relative;
+  }
+
+  .kpi-label {
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 10px;
+  }
+
+  .kpi-value {
+    font-family: var(--serif);
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--text);
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+
+  .kpi-sub {
+    font-size: 11px;
+    color: var(--text-muted);
+  }
+
+  .kpi-flag {
+    position: absolute;
+    top: 12px; right: 12px;
+    width: 8px; height: 8px;
+    border-radius: 50%;
+  }
+  .flag-red { background: var(--red); box-shadow: 0 0 8px var(--red); }
+  .flag-yellow { background: var(--yellow); box-shadow: 0 0 8px var(--yellow); }
+
+  /* ─── QUARTERLY TABLE ─── */
+  .q-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+  }
+
+  .q-table th {
+    text-align: left;
+    padding: 10px 16px;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    border-bottom: 1px solid var(--border);
+    font-weight: 500;
+  }
+
+  .q-table td {
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+
+  .q-table tr:last-child td { border-bottom: none; }
+
+  .q-table tr:hover td { background: var(--surface2); }
+
+  .num { font-variant-numeric: tabular-nums; }
+
+  .q-total td {
+    background: var(--surface2);
+    font-weight: 500;
+    border-top: 1px solid var(--border-light);
+  }
+
+  /* ─── AUDIT FLAGS ─── */
+  .flags-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-top: 20px;
+  }
+
+  @media (max-width: 900px) {
+    .flags-grid { grid-template-columns: 1fr; }
+  }
+
+  .flag-card {
+    border: 1px solid;
+    padding: 20px;
+    position: relative;
+    transition: transform 0.15s;
+  }
+
+  .flag-card:hover { transform: translateY(-2px); }
+
+  .flag-card.high {
+    border-color: var(--red-dim);
+    background: var(--red-bg);
+  }
+
+  .flag-card.medium {
+    border-color: var(--orange-dim);
+    background: var(--orange-bg);
+  }
+
+  .flag-card.low {
+    border-color: var(--yellow-dim);
+    background: var(--yellow-bg);
+  }
+
+  .flag-severity {
+    display: inline-block;
+    padding: 2px 8px;
+    font-size: 9px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    font-weight: 500;
+    border-radius: 2px;
+    margin-bottom: 12px;
+  }
+
+  .high .flag-severity { background: var(--red-dim); color: var(--red); }
+  .medium .flag-severity { background: var(--orange-dim); color: var(--orange); }
+  .low .flag-severity { background: var(--yellow-dim); color: var(--yellow); }
+
+  .flag-number {
+    position: absolute;
+    top: 16px; right: 16px;
+    font-family: var(--serif);
+    font-size: 28px;
+    font-weight: 700;
+    font-style: italic;
+    opacity: 0.12;
+    color: var(--text);
+  }
+
+  .flag-title {
+    font-family: var(--serif);
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 8px;
+    line-height: 1.3;
+  }
+
+  .flag-body {
+    font-size: 12px;
+    color: var(--text-muted);
+    line-height: 1.6;
+    margin-bottom: 12px;
+  }
+
+  .flag-affected {
+    font-size: 10px;
+    color: var(--text-dim);
+    font-style: italic;
+  }
+
+  /* ─── SOURCE TABLE ─── */
+  .source-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+  }
+
+  .source-table th {
+    text-align: left;
+    padding: 10px 16px;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    border-bottom: 1px solid var(--border);
+    font-weight: 500;
+    white-space: nowrap;
+  }
+
+  .source-table td {
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--border);
+    font-size: 12px;
+    vertical-align: top;
+  }
+
+  .source-table tr:hover td { background: var(--surface2); }
+
+  .rate-badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 2px;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+  }
+
+  .rate-66 { background: rgba(90,143,212,0.15); color: var(--blue); border: 1px solid rgba(90,143,212,0.3); }
+  .rate-50 { background: rgba(90,184,122,0.12); color: var(--green); border: 1px solid rgba(90,184,122,0.25); }
+
+  /* ─── SONGS TABLE ─── */
+  .songs-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    font-size: 12px;
+  }
+
+  .songs-table th {
+    text-align: left;
+    padding: 8px 12px;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    border-bottom: 1px solid var(--border);
+    font-weight: 500;
+    white-space: nowrap;
+  }
+
+  .songs-table td {
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: middle;
+  }
+
+  .songs-table tr:hover td { background: var(--surface2); }
+
+  .dot-present {
+    display: inline-block;
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--accent);
+  }
+
+  .dot-absent {
+    display: inline-block;
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--border);
+  }
+
+  .amount-bar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .bar-bg {
+    flex: 1;
+    height: 4px;
+    background: var(--border);
+    border-radius: 2px;
+    overflow: hidden;
+    min-width: 60px;
+  }
+
+  .bar-fill {
+    height: 100%;
+    background: var(--accent);
+    border-radius: 2px;
+  }
+
+  /* ─── DETAIL TABLES ─── */
+  .detail-wrap {
+    overflow-x: auto;
+    margin-top: 20px;
+  }
+
+  .detail-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 11px;
+    min-width: 900px;
+  }
+
+  .detail-table th {
+    text-align: left;
+    padding: 8px 12px;
+    font-size: 9px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    border-bottom: 1px solid var(--border);
+    font-weight: 500;
+    white-space: nowrap;
+  }
+
+  .detail-table td {
+    padding: 8px 12px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text-muted);
+    white-space: nowrap;
+  }
+
+  .detail-table td.song-name {
+    color: var(--text);
+    font-weight: 500;
+    white-space: normal;
+    min-width: 160px;
+  }
+
+  .detail-table tr:hover td { background: var(--surface2); }
+
+  .flag-inline {
+    display: inline-block;
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    margin-left: 6px;
+    vertical-align: middle;
+  }
+
+  /* ─── CONTEXT BOX ─── */
+  .context-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-top: 20px;
+  }
+
+  @media (max-width: 800px) {
+    .context-grid { grid-template-columns: 1fr; }
+    .main { padding: 0 20px 60px; }
+    .header { padding: 40px 20px 32px; }
+    .alert-banner { padding: 16px 20px; }
+  }
+
+  .context-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 20px;
+  }
+
+  .context-card h3 {
+    font-family: var(--serif);
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--accent);
+    margin-bottom: 12px;
+    letter-spacing: 0.02em;
+  }
+
+  .context-card p, .context-card li {
+    font-size: 12px;
+    color: var(--text-muted);
+    line-height: 1.65;
+    margin-bottom: 6px;
+  }
+
+  .context-card ul { padding-left: 16px; }
+
+  /* ─── ACCORDION ─── */
+  details {
+    border: 1px solid var(--border);
+    margin-bottom: 8px;
+  }
+
+  details[open] { border-color: var(--border-light); }
+
+  summary {
+    padding: 14px 20px;
+    cursor: pointer;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--surface);
+    font-size: 12px;
+    color: var(--text);
+    user-select: none;
+  }
+
+  summary::-webkit-details-marker { display: none; }
+
+  summary:hover { background: var(--surface2); }
+
+  summary .chevron {
+    font-size: 10px;
+    color: var(--text-muted);
+    transition: transform 0.2s;
+  }
+
+  details[open] summary .chevron { transform: rotate(90deg); }
+
+  .summary-left { display: flex; align-items: center; gap: 12px; }
+
+  .q-badge {
+    display: inline-block;
+    padding: 2px 8px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    color: var(--text-muted);
+  }
+
+  details .inner { padding: 0 0 16px; }
+
+  /* ─── FOOTER ─── */
+  .footer {
+    margin-top: 80px;
+    padding: 24px 48px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: gap;
+    gap: 12px;
+  }
+
+  .footer p { font-size: 11px; color: var(--text-dim); }
+
+  /* ─── ANIMATIONS ─── */
+  @keyframes fade-up {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .header { animation: fade-up 0.4s ease both; }
+  .alert-banner { animation: fade-up 0.4s 0.1s ease both; }
+  .kpi-grid { animation: fade-up 0.4s 0.15s ease both; }
+
+  /* ─── MISSING INCOME HIGHLIGHT ─── */
+  .missing-box {
+    background: var(--red-bg);
+    border: 1px solid var(--red-dim);
+    padding: 20px 24px;
+    margin-top: 20px;
+  }
+
+  .missing-box h3 {
+    font-family: var(--serif);
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--red);
+    margin-bottom: 10px;
+  }
+
+  .missing-box p {
+    font-size: 12px;
+    color: var(--text-muted);
+    line-height: 1.65;
+    margin-bottom: 8px;
+  }
+
+  .missing-box p:last-child { margin-bottom: 0; }
+
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-meta">Forensic Royalty Analysis &nbsp;/&nbsp; Full Year 2025 &nbsp;/&nbsp; Generated 2026-04-12</div>
+  <h1>Canticuentos Colombia<br><em>Royalty Audit</em></h1>
+  <div class="header-sub">Payee: Marian Margarita Johnson (Acct. 12953) — Songwriter: Marlore Anwandter — Publisher: Spirit Latin (Prodemus)</div>
+  <div class="header-pills">
+    <span class="pill pill-acc">24 Unique Songs</span>
+    <span class="pill pill-acc">6 Source Entities</span>
+    <span class="pill pill-red">12 Audit Flags</span>
+    <span class="pill pill-red">5 High-Severity Issues</span>
+    <span class="pill pill-neutral">Colombia Territory Only</span>
+  </div>
+</div>
+
+<!-- ALERT BANNER -->
+<div class="alert-banner">
+  <div class="alert-icon">⚠</div>
+  <p><strong>Potential Fraud / Irregularity Alert:</strong> This statement contains multiple high-severity anomalies including future-dated payment periods (up to 2026), complete absence of primary Colombian collecting societies (SAYCO/ACINPRO), 2–3 year reporting lags from sub-publishers, inconsistent contractual rates across identical income types, and a bulk flat-rate ACODEM distribution with identical amounts for every song regardless of actual usage. Recommend formal audit before accepting this statement as final.</p>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+  <!-- KPI SUMMARY -->
+  <div class="section">
+    <div class="section-label">Full Year 2025 — Key Figures</div>
+    <div class="kpi-grid">
+      <div class="kpi">
+        <div class="kpi-label">Total Royalties (All Territories)</div>
+        <div class="kpi-value">$14,086</div>
+        <div class="kpi-sub">Across Q1–Q4 2025</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">Colombia Amount Due (Est.)</div>
+        <div class="kpi-value">$2,474</div>
+        <div class="kpi-sub">17.6% of total royalties</div>
+        <div class="kpi-flag flag-yellow"></div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">Largest Single Colombia Item</div>
+        <div class="kpi-value">$88.53</div>
+        <div class="kpi-sub">Sammy El Heladero — Kobalt Q4 Mech.<br>⚠ Future-dated (Jan–Oct 2026)</div>
+        <div class="kpi-flag flag-red"></div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">Colombia % of Total (Q1)</div>
+        <div class="kpi-value">46.7%</div>
+        <div class="kpi-sub">vs. 0.1% in Q3 — extreme variance</div>
+        <div class="kpi-flag flag-red"></div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">Collecting Societies Missing</div>
+        <div class="kpi-value">SAYCO</div>
+        <div class="kpi-sub">Also: ACINPRO — zero performance royalties reported</div>
+        <div class="kpi-flag flag-red"></div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">Max Reporting Lag Observed</div>
+        <div class="kpi-value">~3 yrs</div>
+        <div class="kpi-sub">Sony/ATV COL: 05/2022 period in Q1 2025</div>
+        <div class="kpi-flag flag-red"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- QUARTERLY BREAKDOWN -->
+  <div class="section">
+    <div class="section-label">Quarterly Performance</div>
+    <table class="q-table">
+      <thead>
+        <tr>
+          <th>Quarter</th>
+          <th>Period</th>
+          <th>Total Royalties (All Territories)</th>
+          <th>Colombia Amount Due</th>
+          <th>Colombia %</th>
+          <th>Notes</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Q1 2025</strong></td>
+          <td class="num">Jan 1 – Mar 31</td>
+          <td class="num">$4,112.81</td>
+          <td class="num" style="color:var(--accent)">$1,920.00</td>
+          <td><span style="color:var(--red)">46.7%</span></td>
+          <td style="color:var(--text-muted)">Dominated by ACODEM flat-rate bulk distributions + Sony/ATV delayed payments. Artificially inflated by 2+ year lags.</td>
+        </tr>
+        <tr>
+          <td><strong>Q2 2025</strong></td>
+          <td class="num">Apr 1 – Jun 30</td>
+          <td class="num">$3,265.26</td>
+          <td class="num" style="color:var(--accent)">$463.53</td>
+          <td>14.2%</td>
+          <td style="color:var(--text-muted)">Kobalt blanket sync deal: 6 songs × $77.18. Suggests a single TV/compilation license. Musixmatch lyric streaming very small.</td>
+        </tr>
+        <tr>
+          <td><strong>Q3 2025</strong></td>
+          <td class="num">Jul 1 – Sep 30</td>
+          <td class="num">$2,875.38</td>
+          <td class="num" style="color:var(--text-muted)">$1.47</td>
+          <td><span style="color:var(--text-muted)">0.1%</span></td>
+          <td style="color:var(--text-muted)">Entirely FX rate corrections — not new income. 7 songs × $0.21 each. Quarter adds zero real value to Colombia totals.</td>
+        </tr>
+        <tr>
+          <td><strong>Q4 2025</strong></td>
+          <td class="num">Oct 1 – Dec 31</td>
+          <td class="num">$3,832.14</td>
+          <td class="num" style="color:var(--accent)">$89.00</td>
+          <td>2.3%</td>
+          <td style="color:var(--text-muted)">⚠ Sammy El Heladero Kobalt mech ($88.53) has future-dated periods (01/2026–10/2026). Suspicious advance or data error.</td>
+        </tr>
+        <tr class="q-total">
+          <td><strong>Full Year</strong></td>
+          <td class="num">Jan 1 – Dec 31, 2025</td>
+          <td class="num"><strong>$14,085.59</strong></td>
+          <td class="num" style="color:var(--accent)"><strong>$2,474.00</strong></td>
+          <td><strong>17.6%</strong></td>
+          <td style="color:var(--text-muted)">Q1 ACODEM bulk payments represent ~77% of all Colombia income.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- AUDIT FLAGS -->
+  <div class="section">
+    <div class="section-label">Audit Flags &amp; Potential Fraud Indicators</div>
+
+    <div class="flags-grid">
+
+      <!-- HIGH SEVERITY -->
+      <div class="flag-card high">
+        <div class="flag-number">01</div>
+        <div class="flag-severity">High Severity</div>
+        <div class="flag-title">Absent Primary Collecting Societies (SAYCO / ACINPRO)</div>
+        <div class="flag-body">Neither SAYCO (authors/composers) nor ACINPRO (performers) appears anywhere in 2025 statements. For a catalog as popular as Canticuentos in Colombia — broadcast regularly on TV and public venues — performance royalties are legally mandatory. Their complete absence may indicate funds are being withheld, redirected, or never reported upstream. SAYCO was fined COP 5.3 billion (~$1.2M USD) in Nov 2025 for monopoly abuse, suggesting systemic issues at the society level as well.</div>
+        <div class="flag-affected">Affected: Entire statement — absence of expected income stream</div>
+      </div>
+
+      <div class="flag-card high">
+        <div class="flag-number">02</div>
+        <div class="flag-severity">High Severity</div>
+        <div class="flag-title">Future-Dated Payment Periods</div>
+        <div class="flag-body">Two Q4 entries reference future dates that had not yet occurred when this statement was generated: SAMMY EL HELADERO (Kobalt Mechanical) references periods up to <strong>October 2026</strong>, and JIRAFA MARGARITA LA (YouTube Music) references <strong>November 2026</strong>. Future-dated royalty periods in a 2025 annual statement are structurally impossible for earned income. These may represent advances being disguised as royalties, pre-calculated projections without actual reporting, or straightforward data entry errors — all of which require explanation.</div>
+        <div class="flag-affected">Q4: Sammy El Heladero (Kobalt Mech, $88.53); Jirafa Margarita La (YouTube Music, $0.09)</div>
+      </div>
+
+      <div class="flag-card high">
+        <div class="flag-number">03</div>
+        <div class="flag-severity">High Severity</div>
+        <div class="flag-title">Extreme Reporting Lags (Up to 3 Years)</div>
+        <div class="flag-body">Sony/ATV Colombia Q1 2025 payments relate to periods as far back as April 2023 (2+ year lag). One entry dates to May 2022 — a 3-year lag. The ACODEM Q2 Sammy entry notes "OSA 1Q 2023" routed via Czech collecting society, arriving in 2025. While collecting society delays are common, lags beyond 18 months are industry outliers. Extended lags can be used to obscure or delay income, and make independent verification against statement periods nearly impossible.</div>
+        <div class="flag-affected">All Sony/ATV Colombia Q1 entries; ACODEM Q2 (via OSA Czech)</div>
+      </div>
+
+      <div class="flag-card high">
+        <div class="flag-number">04</div>
+        <div class="flag-severity">High Severity</div>
+        <div class="flag-title">ACODEM Flat-Rate Bulk Distributions</div>
+        <div class="flag-body">In Q1 2025, ACODEM paid <strong>identical amounts</strong> to every song: $150.42 mechanical and $156.20 sync — regardless of actual usage data. Ten songs × identical amounts is not per-stream accounting; it is a catalog-level flat allocation. This structure can mask disproportionate usage patterns, under-report high-performing songs, or over-report low-performing ones. The 66.66% contractual rate applied by ACODEM is also notably higher than the 50% used by all other entities, which warrants contract verification.</div>
+        <div class="flag-affected">All Q1 ACODEM entries (10 songs)</div>
+      </div>
+
+      <div class="flag-card high">
+        <div class="flag-number">05</div>
+        <div class="flag-severity">High Severity</div>
+        <div class="flag-title">No Master Recording Royalties (Codiscos)</div>
+        <div class="flag-body">Codiscos owns the Canticuentos masters and brand. No master recording royalties appear anywhere in this statement. While these statements are framed as composition/publishing rights only, the absence of any reference or reconciliation against master royalties creates a potential blind spot. Without independent confirmation that master royalties are being tracked and paid through a separate channel, this represents a significant unverified income gap.</div>
+        <div class="flag-affected">Entire statement — scope limitation</div>
+      </div>
+
+      <!-- MEDIUM SEVERITY -->
+      <div class="flag-card medium">
+        <div class="flag-number">06</div>
+        <div class="flag-severity">Medium Severity</div>
+        <div class="flag-title">Inconsistent Contractual Rates for Same Source</div>
+        <div class="flag-body">Two contractual rates appear across the statement: 66.66% (Sony/ATV Colombia, ACODEM) and 50% (Kobalt, Musixmatch, YouTube). This alone is explainable by different deal structures. However, within Sony/ATV Colombia alone, most entries show 66.66% but JIRAFA MARGARITA LA and RATON JAPONES EL show 50% — the same source entity, same territory, same income type, but different rates. This inconsistency within a single entity's payouts suggests either a separate contract for those songs or a calculation error.</div>
+        <div class="flag-affected">Jirafa Margarita La, Raton Japones El — Sony/ATV Colombia Q1</div>
+      </div>
+
+      <div class="flag-card medium">
+        <div class="flag-number">07</div>
+        <div class="flag-severity">Medium Severity</div>
+        <div class="flag-title">Partial Ownership Claim — Pajaro Carpintero El</div>
+        <div class="flag-body">One Sony/ATV Colombia sync entry for PAJARO CARPINTERO EL shows a <strong>87.5% received rate</strong> when every other entry across all sources shows 100%. The song has co-writers (Luis Gomez Ramirez / Mario Hernandez). The 87.5% rate may legitimately reflect a shared ownership split — but if so, this should be consistently applied across all income types for this song. Its appearance on a single sync entry only (not the mechanical entries) raises questions about selective application of ownership deductions.</div>
+        <div class="flag-affected">Pajaro Carpintero El — Q1 Sony/ATV Colombia Sync Internet Use</div>
+      </div>
+
+      <div class="flag-card medium">
+        <div class="flag-number">08</div>
+        <div class="flag-severity">Medium Severity</div>
+        <div class="flag-title">Suspicious Uniform Kobalt Sync Amounts (Q2)</div>
+        <div class="flag-body">In Q2, exactly 6 songs each received $154.35 from Kobalt Music for SYNC INCOME from Colombia (period 10–12/2024). Perfectly identical amounts across multiple songs strongly suggest a single blanket sync license — possibly a TV show, educational platform, or compilation. While blanket deals are legitimate, the issuer, the underlying sync use, and the negotiated rate for this license are not disclosed. Without disclosure, it is impossible to verify whether the allocation across songs is fair or whether additional songs were included but not reported.</div>
+        <div class="flag-affected">Q2 Kobalt Music Sync — 6 songs × $154.35</div>
+      </div>
+
+      <div class="flag-card medium">
+        <div class="flag-number">09</div>
+        <div class="flag-severity">Medium Severity</div>
+        <div class="flag-title">Sammy El Heladero Outsized Colombia Share</div>
+        <div class="flag-body">SAMMY EL HELADERO generates disproportionate Colombia income in every quarter — including a $88.53 Kobalt mechanical payment in Q4 with future-dated periods, and consistent appearances across all four quarters. No other song appears in all four quarters with meaningful amounts. This pattern may reflect a legitimate separate licensing arrangement, but the combination of outsized income + future-dated periods on this single song warrants specific scrutiny of its underlying contracts.</div>
+        <div class="flag-affected">Sammy El Heladero — all quarters; Q4 Kobalt Mech especially</div>
+      </div>
+
+      <!-- LOW SEVERITY -->
+      <div class="flag-card low">
+        <div class="flag-number">10</div>
+        <div class="flag-severity">Low Severity</div>
+        <div class="flag-title">Q3 Entirely FX Corrections — No Real Income</div>
+        <div class="flag-body">The entire Q3 Colombia section consists of foreign exchange rate corrections: 7 songs × $0.42 received / $0.21 due each. Total Q3 Colombia: $1.47. These are prior period adjustments, not new income. Including them as a separate quarter can pad the appearance of activity and obscures the true income pattern. A clean statement would flag these as prior-period adjustments rather than presenting them as current-quarter earnings.</div>
+        <div class="flag-affected">All Q3 Kobalt Music entries</div>
+      </div>
+
+      <div class="flag-card low">
+        <div class="flag-number">11</div>
+        <div class="flag-severity">Low Severity</div>
+        <div class="flag-title">Rounding Anomaly — MI OSITO DE LANA</div>
+        <div class="flag-body">Q2 MI OSITO DE LANA (Musixmatch): $0.15 received × 50% contractual rate = $0.075, but Amount Due is stated as $0.09. The $0.015 difference suggests either systematic rounding up or undisclosed additional decimal values. While the absolute dollar amount is tiny, if this pattern is applied systematically across thousands of micro-royalty lines, cumulative rounding errors could be material.</div>
+        <div class="flag-affected">Q2 MI OSITO DE LANA — Musixmatch Streaming Mechanical</div>
+      </div>
+
+      <div class="flag-card low">
+        <div class="flag-number">12</div>
+        <div class="flag-severity">Low Severity</div>
+        <div class="flag-title">Extremely Low Colombian Streaming Rates</div>
+        <div class="flag-body">YouTube Music Colombia generates approximately $0.00002 per stream — well below global averages. While Colombian streaming rates are legitimately among the lowest globally due to currency conversion and local market pricing, the rates here (3,500–5,000 streams generating $0.09) warrant benchmarking against SAYCO rate cards and published platform royalty schedules for the Colombian market to confirm they are within expected ranges.</div>
+        <div class="flag-affected">All YouTube Music Colombia entries; Musixmatch streaming entries</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- MISSING INCOME -->
+  <div class="section">
+    <div class="section-label">Critical Gap — Expected Income Not Found</div>
+    <div class="missing-box">
+      <h3>⚠ SAYCO / ACINPRO Performance Royalties — Completely Absent</h3>
+      <p>SAYCO (Sociedad de Autores y Compositores de Colombia) is the mandatory collective management organization for musical authors and composers in Colombia. For any song performed publicly, broadcast on radio or TV, or played in commercial venues in Colombia, SAYCO is legally required to collect and distribute performance royalties. ACINPRO covers performers and producers.</p>
+      <p>Canticuentos songs have been broadcast on Colombian children's television, radio, and educational platforms since 1975. For a catalog of this size and cultural prominence to generate <strong>zero</strong> SAYCO income in an entire calendar year is exceptional — and demands immediate clarification.</p>
+      <p>Possibilities include: (1) SAYCO income is being collected but retained at the publisher level and not passed through; (2) SAYCO has not been correctly registered for this catalog; (3) Income is being reported under a different payee name; (4) The statements provided do not represent the complete picture of income streams. Additionally, SAYCO's own compliance issues (fined COP 5.3 billion in Nov 2025) may be a contributing factor requiring independent investigation.</p>
+      <p>Colombia imposes a <strong>20–25% withholding tax on royalties to non-residents</strong>. These statements should also be checked for correct WHT application on all Colombia-territory payments.</p>
+    </div>
+  </div>
+
+  <!-- SOURCE ENTITY TABLE -->
+  <div class="section">
+    <div class="section-label">Colombia Income by Source Entity</div>
+    <table class="source-table">
+      <thead>
+        <tr>
+          <th>Entity</th>
+          <th>Role</th>
+          <th>Colombia Amount Due</th>
+          <th>Rate</th>
+          <th>Income Types</th>
+          <th>Key Issues</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>ACODEM</strong></td>
+          <td style="color:var(--text-muted)">Colombian collecting society (publishers)</td>
+          <td class="num" style="color:var(--accent)"><strong>$1,317.22</strong></td>
+          <td><span class="rate-badge rate-66">66.66%</span></td>
+          <td style="color:var(--text-muted)">Mechanical / Sync</td>
+          <td style="color:var(--red)">Flat-rate bulk — identical $100.27 mech / $104.12 sync per song regardless of usage. Q1 only.</td>
+        </tr>
+        <tr>
+          <td><strong>KOBALT MUSIC</strong></td>
+          <td style="color:var(--text-muted)">International publisher / administrator</td>
+          <td class="num" style="color:var(--accent)"><strong>$697.57</strong></td>
+          <td><span class="rate-badge rate-50">50.00%</span></td>
+          <td style="color:var(--text-muted)">Sync / Mechanical / FX Adj.</td>
+          <td style="color:var(--orange)">Q2 blanket deal (6 × $77.18). Q3 = FX only. Q4 = future-dated mechanical ($88.53 for Sammy).</td>
+        </tr>
+        <tr>
+          <td><strong>SONY/ATV COLOMBIA</strong></td>
+          <td style="color:var(--text-muted)">Sub-publisher (Colombia)</td>
+          <td class="num" style="color:var(--accent)"><strong>~$8.00</strong></td>
+          <td><span class="rate-badge rate-66">66.66%</span></td>
+          <td style="color:var(--text-muted)">Streaming Mech / Sync Internet</td>
+          <td style="color:var(--red)">2–3 year reporting lags. Inconsistent rates on 2 songs. Partial ownership deduction on Pajaro Carpintero (87.5%).</td>
+        </tr>
+        <tr>
+          <td><strong>MUSIXMATCH</strong></td>
+          <td style="color:var(--text-muted)">Lyric display platform</td>
+          <td class="num" style="color:var(--accent)"><strong>~$1.50</strong></td>
+          <td><span class="rate-badge rate-50">50.00%</span></td>
+          <td style="color:var(--text-muted)">Streaming Mech / Lyric Reprint</td>
+          <td style="color:var(--yellow-dim); color:var(--yellow)">Micro-amounts ($0.01–$0.09). Rounding anomaly on Mi Osito de Lana.</td>
+        </tr>
+        <tr>
+          <td><strong>YOUTUBE MUSIC</strong></td>
+          <td style="color:var(--text-muted)">Streaming platform</td>
+          <td class="num" style="color:var(--accent)"><strong>~$0.50</strong></td>
+          <td><span class="rate-badge rate-50">50.00%</span></td>
+          <td style="color:var(--text-muted)">Streaming Mechanical</td>
+          <td style="color:var(--orange)">3,500–5,000 streams generating $0.01–$0.09. Rate ~$0.00002/stream. Jirafa Margarita future-dated 11/2026.</td>
+        </tr>
+        <tr>
+          <td><strong>DEEZER</strong></td>
+          <td style="color:var(--text-muted)">Streaming platform</td>
+          <td class="num" style="color:var(--accent)"><strong>~$0.06</strong></td>
+          <td><span class="rate-badge rate-50">50.00%</span></td>
+          <td style="color:var(--text-muted)">Streaming Mechanical</td>
+          <td style="color:var(--text-dim)">Minimal Colombia activity. 534 streams / $0.06.</td>
+        </tr>
+        <tr style="background:var(--red-bg)">
+          <td style="color:var(--red)"><strong>SAYCO</strong></td>
+          <td style="color:var(--red-dim)">Primary author/composer PRO (Colombia)</td>
+          <td class="num" style="color:var(--red)"><strong>$0.00</strong></td>
+          <td style="color:var(--red-dim)">—</td>
+          <td style="color:var(--red-dim)">Performance royalties</td>
+          <td style="color:var(--red)">⚠ MISSING ENTIRELY. Expected for all public performance / broadcast in Colombia.</td>
+        </tr>
+        <tr style="background:var(--red-bg)">
+          <td style="color:var(--red)"><strong>ACINPRO</strong></td>
+          <td style="color:var(--red-dim)">Performers / producers PRO (Colombia)</td>
+          <td class="num" style="color:var(--red)"><strong>$0.00</strong></td>
+          <td style="color:var(--red-dim)">—</td>
+          <td style="color:var(--red-dim)">Neighboring rights</td>
+          <td style="color:var(--red)">⚠ MISSING ENTIRELY.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- SONGS WITH INCOME -->
+  <div class="section">
+    <div class="section-label">Songs with Colombia Income (24 Titles)</div>
+    <table class="songs-table">
+      <thead>
+        <tr>
+          <th>Song Title</th>
+          <th>Q1</th>
+          <th>Q2</th>
+          <th>Q3</th>
+          <th>Q4</th>
+          <th>Est. Amount Due</th>
+          <th>Co-Writers?</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>SAMMY EL HELADERO</strong> <span style="color:var(--orange);font-size:10px">▲ Future-dated periods</span></td>
+          <td><span class="dot-present"></span></td>
+          <td><span class="dot-present"></span></td>
+          <td><span class="dot-present"></span></td>
+          <td><span class="dot-present"></span></td>
+          <td>
+            <div class="amount-bar">
+              <span class="num" style="color:var(--accent)">$294.08</span>
+              <div class="bar-bg"><div class="bar-fill" style="width:100%"></div></div>
+            </div>
+          </td>
+          <td style="color:var(--text-muted)">No</td>
+        </tr>
+        <tr>
+          <td><strong>RONDA DE LAS VOCALES</strong></td>
+          <td><span class="dot-present"></span></td>
+          <td><span class="dot-absent"></span></td>
+          <td><span class="dot-absent"></span></td>
+          <td><span class="dot-absent"></span></td>
+          <td>
+            <div class="amount-bar">
+              <span class="num" style="color:var(--accent)">$207.72</span>
+              <div class="bar-bg"><div class="bar-fill" style="width:71%"></div></div>
+            </div>
+          </td>
+          <td style="color:var(--text-muted)">No</td>
+        </tr>
+        <tr>
+          <td><strong>PAJARO CARPINTERO EL</strong> <span style="color:var(--orange);font-size:10px">▲ Partial ownership issue</span></td>
+          <td><span class="dot-present"></span></td>
+          <td><span class="dot-absent"></span></td>
+          <td><span class="dot-absent"></span></td>
+          <td><span class="dot-absent"></span></td>
+          <td>
+            <div class="amount-bar">
+              <span class="num" style="color:var(--accent)">$205.44</span>
+              <div class="bar-bg"><div class="bar-fill" style="width:70%"></div></div>
+            </div>
+          </td>
+          <td style="color:var(--orange)">Yes — Gomez Ramirez / Hernandez</td>
+        </tr>
+        <tr>
+          <td><strong>NEGRO CIRILO EL</strong></td>
+          <td><span class="dot-present"></span></td>
+          <td><span class="dot-absent"></span></td>
+          <td><span class="dot-absent"></span></td>
+          <td><span class="dot-absent"></span></td>
+          <td>
+            <div class="amount-bar">
+              <span class="num" style="color:var(--accent)">$204.74</span>
+              <div class="bar-bg"><div class="bar-fill" style="width:70%"></div></div>
+            </div>
+          </td>
+          <td style="color:var(--text-muted)">No</td>
+        </tr>
+        <tr>
+          <td><strong>PIRATA FEROZ EL</strong></td>
+          <td><span class="dot-present"></span></td>
+          <td><span class="dot-present"></span></td>
+          <td><span class="dot-absent"></span></td>
+          <td><span class="dot-present"></span></td>
+          <td>
+            <div class="amount-bar">
+              <span class="num" style="color:var(--accent)">$204.67</span>
+              <div class="bar-bg"><div class="bar-fill" style="width:70%"></div></div>
+            </div>
+          </td>
+          <td style="color:var(--text-muted)">No</td>
+        </tr>
+        <tr>
+          <td><strong>CANCION PARA MI PAPA</strong></td>
+          <td><span class="dot-present"></span></td>
+          <td><span class="dot-absent"></span></td>
+          <td><span class="dot-absent"></span></td>
+          <td><span class="dot-absent"></span></td>
+          <td>
+            <div class="amount-bar">
+              <span class="num" style="color:var(--accent)">$204.61</span>
+              <div class="bar-bg"><div class="bar-fill" style="width:70%"></div></div>
+            </div>
+          </td>
+          <td style="color:var(--text-muted)">No</td>
+        </tr>
+        <tr>
+          <td><strong>SERPIENTE DE TIERRA CALIENTE</strong></td>
+          <td><span class="dot-present"></span></td>
+          <td><span class="dot-absent"></span></td>
+          <td><span class="dot-absent"></span></td>
+          <td><span class="dot-absent"></span></td>
+          <td>
+            <div class="amount-bar">
+              <span class="num" style="color:var(--accent)">$204.47</span>
+              <div class="bar-bg"><div class="bar-fill" style="width:70%"></div></div>
+            </div>
+          </td>
+          <td style="color:var(--text-muted)">No</td>
+        </tr>
+        <tr>
+          <td><strong>IGUANA Y EL PEREZOSO</strong></td>
+          <td><span class="dot-present"></span></td>
+          <td><span class="dot-present"></span></td>
+          <td><span class="dot-present"></span></td>
+          <td><span class="dot-absent"></span></td>
+          <td>
+            <div class="amount-bar">
+              <span class="num" style="color:var(--accent)">$281.78</span>
+              <div class="bar-bg"><div class="bar-fill" style="width:96%"></div></div>
+            </div>
+          </td>
+          <td style="color:var(--text-muted)">No</td>
+        </tr>
+        <tr>
+          <td><strong>CANCION DEL CERO LA</strong></td>
+          <td><span class="dot-present"></span></td>
+          <td><span class="dot-absent"></span></td>
+          <td><span class="dot-absent"></span></td>
+          <td><span class="dot-absent"></span></td>
+          <td>
+            <div class="amount-bar">
+              <span class="num" style="color:var(--accent)">$104.12</span>
+              <div class="bar-bg"><div class="bar-fill" style="width:35%"></div></div>
+            </div>
+          </td>
+          <td style="color:var(--text-muted)">No</td>
+        </tr>
+        <tr>
+          <td><strong>CRAZY WITCH THE</strong></td>
+          <td><span class="dot-absent"></span></td>
+          <td><span class="dot-present"></span></td>
+          <td><span class="dot-present"></span></td>
+          <td><span class="dot-absent"></span></td>
+          <td>
+            <div class="amount-bar">
+              <span class="num" style="color:var(--accent)">$77.39</span>
+              <div class="bar-bg"><div class="bar-fill" style="width:26%"></div></div>
+            </div>
+          </td>
+          <td style="color:var(--orange)">Unknown co-writer</td>
+        </tr>
+        <tr>
+          <td><strong>ELENA LA BALLENA</strong></td>
+          <td><span class="dot-absent"></span></td>
+          <td><span class="dot-present"></span></td>
+          <td><span class="dot-present"></span></td>
+          <td><span class="dot-absent"></span></td>
+          <td>
+            <div class="amount-bar">
+              <span class="num" style="color:var(--accent)">$77.39</span>
+              <div class="bar-bg"><div class="bar-fill" style="width:26%"></div></div>
+            </div>
+          </td>
+          <td style="color:var(--text-muted)">No</td>
+        </tr>
+        <tr>
+          <td><strong>PANCHO PANCHITA</strong></td>
+          <td><span class="dot-absent"></span></td>
+          <td><span class="dot-present"></span></td>
+          <td><span class="dot-present"></span></td>
+          <td><span class="dot-absent"></span></td>
+          <td>
+            <div class="amount-bar">
+              <span class="num" style="color:var(--accent)">$77.39</span>
+              <div class="bar-bg"><div class="bar-fill" style="width:26%"></div></div>
+            </div>
+          </td>
+          <td style="color:var(--text-muted)">No</td>
+        </tr>
+        <tr>
+          <td><strong>RAMON Y RAMONA</strong></td>
+          <td><span class="dot-present"></span></td>
+          <td><span class="dot-present"></span></td>
+          <td><span class="dot-present"></span></td>
+          <td><span class="dot-absent"></span></td>
+          <td>
+            <div class="amount-bar">
+              <span class="num" style="color:var(--accent)">$77.51</span>
+              <div class="bar-bg"><div class="bar-fill" style="width:26%"></div></div>
+            </div>
+          </td>
+          <td style="color:var(--text-muted)">No</td>
+        </tr>
+        <tr>
+          <td><strong>TRENCITO CANERO EL</strong></td>
+          <td><span class="dot-present"></span></td>
+          <td><span class="dot-absent"></span></td>
+          <td><span class="dot-absent"></span></td>
+          <td><span class="dot-absent"></span></td>
+          <td>
+            <div class="amount-bar">
+              <span class="num" style="color:var(--accent)">$0.50</span>
+              <div class="bar-bg"><div class="bar-fill" style="width:1%"></div></div>
+            </div>
+          </td>
+          <td style="color:var(--text-muted)">No</td>
+        </tr>
+        <tr>
+          <td style="color:var(--text-muted)">Other 10 songs (micro-royalties)</td>
+          <td colspan="4" style="color:var(--text-dim)">Various quarters</td>
+          <td>
+            <div class="amount-bar">
+              <span class="num" style="color:var(--text-muted)">&lt; $1.00 each</span>
+            </div>
+          </td>
+          <td style="color:var(--text-dim)">—</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- DETAILED LINE ITEMS -->
+  <div class="section">
+    <div class="section-label">Detailed Line Items by Quarter</div>
+
+    <details>
+      <summary>
+        <div class="summary-left">
+          <span class="q-badge">Q1 2025</span>
+          <span>Jan–Mar 2025 &nbsp;·&nbsp; Colombia Due: $1,920.00 &nbsp;·&nbsp; Dominated by ACODEM flat-rate and Sony/ATV delayed payments</span>
+        </div>
+        <span class="chevron">▶</span>
+      </summary>
+      <div class="inner">
+        <div class="detail-wrap">
+          <table class="detail-table">
+            <thead>
+              <tr>
+                <th>Song</th>
+                <th>Source</th>
+                <th>Income Type</th>
+                <th>Period</th>
+                <th>Amt Received</th>
+                <th>Rate</th>
+                <th>Amt Due</th>
+                <th>Flag</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td class="song-name">CANCION DEL CERO LA</td><td>ACODEM</td><td>Sync Income</td><td>07/2024</td><td class="num">$156.20</td><td>66.66%</td><td class="num" style="color:var(--accent)">$104.12</td><td style="color:var(--orange)">Flat-rate bulk</td></tr>
+              <tr><td class="song-name">CANCION PARA MI PAPA</td><td>ACODEM</td><td>Mechanical</td><td>07/2024</td><td class="num">$150.42</td><td>66.66%</td><td class="num" style="color:var(--accent)">$100.27</td><td style="color:var(--orange)">Flat-rate bulk</td></tr>
+              <tr><td class="song-name">CANCION PARA MI PAPA</td><td>ACODEM</td><td>Sync Income</td><td>07/2024</td><td class="num">$156.20</td><td>66.66%</td><td class="num" style="color:var(--accent)">$104.12</td><td style="color:var(--orange)">Flat-rate bulk</td></tr>
+              <tr><td class="song-name">IGUANA Y EL PEREZOSO</td><td>ACODEM</td><td>Mechanical</td><td>07/2024</td><td class="num">$150.42</td><td>66.66%</td><td class="num" style="color:var(--accent)">$100.27</td><td style="color:var(--orange)">Flat-rate bulk</td></tr>
+              <tr><td class="song-name">IGUANA Y EL PEREZOSO</td><td>ACODEM</td><td>Sync Income</td><td>07/2024</td><td class="num">$156.20</td><td>66.66%</td><td class="num" style="color:var(--accent)">$104.12</td><td style="color:var(--orange)">Flat-rate bulk</td></tr>
+              <tr><td class="song-name">NEGRO CIRILO EL</td><td>ACODEM</td><td>Mechanical</td><td>07/2024</td><td class="num">$150.42</td><td>66.66%</td><td class="num" style="color:var(--accent)">$100.27</td><td style="color:var(--orange)">Flat-rate bulk</td></tr>
+              <tr><td class="song-name">NEGRO CIRILO EL</td><td>ACODEM</td><td>Sync Income</td><td>07/2024</td><td class="num">$156.20</td><td>66.66%</td><td class="num" style="color:var(--accent)">$104.12</td><td style="color:var(--orange)">Flat-rate bulk</td></tr>
+              <tr><td class="song-name">PAJARO CARPINTERO EL</td><td>ACODEM</td><td>Mechanical</td><td>07/2024</td><td class="num">$150.42</td><td>66.66%</td><td class="num" style="color:var(--accent)">$100.27</td><td style="color:var(--orange)">Flat-rate bulk</td></tr>
+              <tr><td class="song-name">PAJARO CARPINTERO EL</td><td>ACODEM</td><td>Sync Income</td><td>07/2024</td><td class="num">$156.20</td><td>66.66%</td><td class="num" style="color:var(--accent)">$104.12</td><td style="color:var(--orange)">Flat-rate bulk</td></tr>
+              <tr><td class="song-name">PAJARO CARPINTERO EL</td><td>SONY/ATV COLOMBIA</td><td>Sync Internet</td><td>04/2023</td><td class="num">$1.57</td><td>66.66%</td><td class="num" style="color:var(--accent)">$1.05</td><td style="color:var(--red)">87.5% received — partial ownership?</td></tr>
+              <tr><td class="song-name">PIRATA FEROZ EL</td><td>ACODEM</td><td>Mechanical</td><td>07/2024</td><td class="num">$150.42</td><td>66.66%</td><td class="num" style="color:var(--accent)">$100.27</td><td style="color:var(--orange)">Flat-rate bulk</td></tr>
+              <tr><td class="song-name">PIRATA FEROZ EL</td><td>ACODEM</td><td>Sync Income</td><td>07/2024</td><td class="num">$156.20</td><td>66.66%</td><td class="num" style="color:var(--accent)">$104.12</td><td style="color:var(--orange)">Flat-rate bulk</td></tr>
+              <tr><td class="song-name">RONDA DE LAS VOCALES</td><td>ACODEM</td><td>Mechanical</td><td>07/2024</td><td class="num">$150.42</td><td>66.66%</td><td class="num" style="color:var(--accent)">$100.27</td><td style="color:var(--orange)">Flat-rate bulk</td></tr>
+              <tr><td class="song-name">RONDA DE LAS VOCALES</td><td>ACODEM</td><td>Sync Income</td><td>07/2024</td><td class="num">$156.20</td><td>66.66%</td><td class="num" style="color:var(--accent)">$104.12</td><td style="color:var(--orange)">Flat-rate bulk</td></tr>
+              <tr><td class="song-name">RONDA DE LAS VOCALES</td><td>SONY/ATV COLOMBIA</td><td>Sync Internet</td><td>04/2023</td><td class="num">$4.00</td><td>66.66%</td><td class="num" style="color:var(--accent)">$2.67</td><td style="color:var(--red)">2-year lag</td></tr>
+              <tr><td class="song-name">SAMMY EL HELADERO</td><td>ACODEM</td><td>Mechanical</td><td>07/2024</td><td class="num">$150.42</td><td>66.66%</td><td class="num" style="color:var(--accent)">$100.27</td><td style="color:var(--orange)">Flat-rate bulk</td></tr>
+              <tr><td class="song-name">SAMMY EL HELADERO</td><td>ACODEM</td><td>Sync Income</td><td>07/2024</td><td class="num">$156.20</td><td>66.66%</td><td class="num" style="color:var(--accent)">$104.12</td><td style="color:var(--orange)">Flat-rate bulk</td></tr>
+              <tr><td class="song-name">SERPIENTE DE TIERRA CALIENTE</td><td>ACODEM</td><td>Mechanical</td><td>07/2024</td><td class="num">$150.42</td><td>66.66%</td><td class="num" style="color:var(--accent)">$100.27</td><td style="color:var(--orange)">Flat-rate bulk</td></tr>
+              <tr><td class="song-name">SERPIENTE DE TIERRA CALIENTE</td><td>ACODEM</td><td>Sync Income</td><td>07/2024</td><td class="num">$156.20</td><td>66.66%</td><td class="num" style="color:var(--accent)">$104.12</td><td style="color:var(--orange)">Flat-rate bulk</td></tr>
+              <tr><td class="song-name">JIRAFA MARGARITA LA</td><td>SONY/ATV COLOMBIA</td><td>Streaming Mech</td><td>04/2023</td><td class="num">$0.02</td><td style="color:var(--red)">50%</td><td class="num" style="color:var(--accent)">$0.01</td><td style="color:var(--red)">Rate anomaly — 50% vs. 66.66%</td></tr>
+              <tr><td class="song-name">RATON JAPONES EL</td><td>SONY/ATV COLOMBIA</td><td>Streaming Mech</td><td>04/2023</td><td class="num">$0.01</td><td style="color:var(--red)">50%</td><td class="num" style="color:var(--accent)">$0.01</td><td style="color:var(--red)">Rate anomaly — 50% vs. 66.66%</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </details>
+
+    <details>
+      <summary>
+        <div class="summary-left">
+          <span class="q-badge">Q2 2025</span>
+          <span>Apr–Jun 2025 &nbsp;·&nbsp; Colombia Due: $463.53 &nbsp;·&nbsp; Kobalt blanket sync deal + Musixmatch micro-royalties</span>
+        </div>
+        <span class="chevron">▶</span>
+      </summary>
+      <div class="inner">
+        <div class="detail-wrap">
+          <table class="detail-table">
+            <thead>
+              <tr>
+                <th>Song</th>
+                <th>Source</th>
+                <th>Income Type</th>
+                <th>Period</th>
+                <th>Units</th>
+                <th>Amt Received</th>
+                <th>Rate</th>
+                <th>Amt Due</th>
+                <th>Flag</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td class="song-name">CRAZY WITCH THE</td><td>KOBALT MUSIC</td><td>Sync Income</td><td>10–12/2024</td><td>1</td><td class="num">$154.35</td><td>50%</td><td class="num" style="color:var(--accent)">$77.18</td><td style="color:var(--orange)">Blanket deal — 6 songs identical</td></tr>
+              <tr><td class="song-name">ELENA LA BALLENA</td><td>KOBALT MUSIC</td><td>Sync Income</td><td>10–12/2024</td><td>1</td><td class="num">$154.35</td><td>50%</td><td class="num" style="color:var(--accent)">$77.18</td><td style="color:var(--orange)">Blanket deal — identical</td></tr>
+              <tr><td class="song-name">IGUANA Y EL PEREZOSO</td><td>KOBALT MUSIC</td><td>Sync Income</td><td>10–12/2024</td><td>1</td><td class="num">$154.35</td><td>50%</td><td class="num" style="color:var(--accent)">$77.18</td><td style="color:var(--orange)">Blanket deal — identical</td></tr>
+              <tr><td class="song-name">PANCHO PANCHITA</td><td>KOBALT MUSIC</td><td>Sync Income</td><td>10–12/2024</td><td>1</td><td class="num">$154.35</td><td>50%</td><td class="num" style="color:var(--accent)">$77.18</td><td style="color:var(--orange)">Blanket deal — identical</td></tr>
+              <tr><td class="song-name">RAMON Y RAMONA</td><td>KOBALT MUSIC</td><td>Sync Income</td><td>10–12/2024</td><td>1</td><td class="num">$154.35</td><td>50%</td><td class="num" style="color:var(--accent)">$77.18</td><td style="color:var(--orange)">Blanket deal — identical</td></tr>
+              <tr><td class="song-name">SAMMY EL HELADERO</td><td>KOBALT MUSIC</td><td>Sync Income</td><td>10–12/2024</td><td>1</td><td class="num">$154.35</td><td>50%</td><td class="num" style="color:var(--accent)">$77.18</td><td style="color:var(--orange)">Blanket deal — identical</td></tr>
+              <tr><td class="song-name">SAMMY EL HELADERO</td><td>ACODEM (via OSA)</td><td>Mechanical</td><td>09/2024</td><td>4</td><td class="num">$0.27</td><td>66.66%</td><td class="num" style="color:var(--accent)">$0.18</td><td style="color:var(--red)">Routed via Czech PRO — 2+ year lag</td></tr>
+              <tr><td class="song-name">MI OSITO DE LANA</td><td>MUSIXMATCH</td><td>Streaming Mech</td><td>10–12/2024</td><td>—</td><td class="num">$0.15</td><td>50%</td><td class="num" style="color:var(--accent)">$0.09</td><td style="color:var(--yellow)">Rounding anomaly: 0.15×50%=0.075≠$0.09</td></tr>
+              <tr><td class="song-name">JIRAFA MARGARITA LA</td><td>MUSIXMATCH</td><td>Streaming Mech</td><td>10–12/2024</td><td>207</td><td class="num">$0.03</td><td>50%</td><td class="num" style="color:var(--accent)">$0.02</td><td style="color:var(--text-dim)">—</td></tr>
+              <tr><td class="song-name">PIRATA FEROZ EL</td><td>MUSIXMATCH</td><td>Streaming Mech</td><td>10–12/2024</td><td>643</td><td class="num">$0.13</td><td>50%</td><td class="num" style="color:var(--accent)">$0.08</td><td style="color:var(--text-dim)">—</td></tr>
+              <tr><td class="song-name">RATON JAPONES EL</td><td>MUSIXMATCH</td><td>Streaming Mech</td><td>10–12/2024</td><td>396</td><td class="num">$0.07</td><td>50%</td><td class="num" style="color:var(--accent)">$0.05</td><td style="color:var(--text-dim)">—</td></tr>
+              <tr><td class="song-name">SAMMY EL HELADERO</td><td>MUSIXMATCH</td><td>Streaming Mech</td><td>10–12/2024</td><td>128</td><td class="num">$0.04</td><td>50%</td><td class="num" style="color:var(--accent)">$0.03</td><td style="color:var(--text-dim)">—</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </details>
+
+    <details>
+      <summary>
+        <div class="summary-left">
+          <span class="q-badge">Q3 2025</span>
+          <span>Jul–Sep 2025 &nbsp;·&nbsp; Colombia Due: $1.47 &nbsp;·&nbsp; ENTIRELY FX rate corrections — not new income</span>
+        </div>
+        <span class="chevron">▶</span>
+      </summary>
+      <div class="inner">
+        <div class="detail-wrap">
+          <table class="detail-table">
+            <thead>
+              <tr><th>Song</th><th>Source</th><th>Income Type</th><th>Period</th><th>Amt Received</th><th>Rate</th><th>Amt Due</th><th>Note</th></tr>
+            </thead>
+            <tbody>
+              <tr><td class="song-name">CRAZY WITCH THE</td><td>KOBALT MUSIC</td><td>Sync (FX Adj.)</td><td>04–06/2025</td><td class="num">$0.42</td><td>50%</td><td class="num" style="color:var(--text-muted)">$0.21</td><td style="color:var(--yellow)">FX correction only</td></tr>
+              <tr><td class="song-name">ELENA LA BALLENA</td><td>KOBALT MUSIC</td><td>Sync (FX Adj.)</td><td>04–06/2025</td><td class="num">$0.42</td><td>50%</td><td class="num" style="color:var(--text-muted)">$0.21</td><td style="color:var(--yellow)">FX correction only</td></tr>
+              <tr><td class="song-name">IGUANA Y EL PEREZOSO</td><td>KOBALT MUSIC</td><td>Sync (FX Adj.)</td><td>04–06/2025</td><td class="num">$0.42</td><td>50%</td><td class="num" style="color:var(--text-muted)">$0.21</td><td style="color:var(--yellow)">FX correction only</td></tr>
+              <tr><td class="song-name">JIRAFA MARGARITA LA</td><td>KOBALT MUSIC</td><td>Sync (FX Adj.)</td><td>04–06/2025</td><td class="num">$0.42</td><td>50%</td><td class="num" style="color:var(--text-muted)">$0.21</td><td style="color:var(--yellow)">FX correction only</td></tr>
+              <tr><td class="song-name">PANCHO PANCHITA</td><td>KOBALT MUSIC</td><td>Sync (FX Adj.)</td><td>04–06/2025</td><td class="num">$0.42</td><td>50%</td><td class="num" style="color:var(--text-muted)">$0.21</td><td style="color:var(--yellow)">FX correction only</td></tr>
+              <tr><td class="song-name">RAMON Y RAMONA</td><td>KOBALT MUSIC</td><td>Sync (FX Adj.)</td><td>04–06/2025</td><td class="num">$0.42</td><td>50%</td><td class="num" style="color:var(--text-muted)">$0.21</td><td style="color:var(--yellow)">FX correction only</td></tr>
+              <tr><td class="song-name">SAMMY EL HELADERO</td><td>KOBALT MUSIC</td><td>Sync (FX Adj.)</td><td>04–06/2025</td><td class="num">$0.42</td><td>50%</td><td class="num" style="color:var(--text-muted)">$0.21</td><td style="color:var(--yellow)">FX correction only</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </details>
+
+    <details>
+      <summary>
+        <div class="summary-left">
+          <span class="q-badge">Q4 2025</span>
+          <span>Oct–Dec 2025 &nbsp;·&nbsp; Colombia Due: $89.00 &nbsp;·&nbsp; ⚠ Contains future-dated periods</span>
+        </div>
+        <span class="chevron">▶</span>
+      </summary>
+      <div class="inner">
+        <div class="detail-wrap">
+          <table class="detail-table">
+            <thead>
+              <tr><th>Song</th><th>Source</th><th>Income Type</th><th>Period</th><th>Units</th><th>Amt Received</th><th>Rate</th><th>Amt Due</th><th>Flag</th></tr>
+            </thead>
+            <tbody>
+              <tr style="background:rgba(224,85,85,0.05)"><td class="song-name">SAMMY EL HELADERO</td><td>KOBALT MUSIC</td><td>Mechanical</td><td style="color:var(--red)">01/2026–10/2026 ⚠</td><td>—</td><td class="num">$177.06</td><td>50%</td><td class="num" style="color:var(--red)">$88.53</td><td style="color:var(--red)">FUTURE-DATED — largest single item</td></tr>
+              <tr style="background:rgba(224,85,85,0.05)"><td class="song-name">JIRAFA MARGARITA LA</td><td>YOUTUBE MUSIC</td><td>Streaming Mech</td><td style="color:var(--red)">09/2025–11/2026 ⚠</td><td class="num">12,229</td><td class="num">$0.15</td><td>50%</td><td class="num" style="color:var(--accent)">$0.09</td><td style="color:var(--red)">11/2026 period is FUTURE-DATED</td></tr>
+              <tr><td class="song-name">MI OSITO DE LANA</td><td>MUSIXMATCH</td><td>Lyric Reprint</td><td>04–09/2025</td><td class="num">1,024</td><td class="num">$0.27</td><td>50%</td><td class="num" style="color:var(--accent)">$0.16</td><td style="color:var(--text-dim)">Most popular lyrics in Colombia</td></tr>
+              <tr><td class="song-name">PIRATA FEROZ EL</td><td>MUSIXMATCH</td><td>Lyric Reprint</td><td>04–09/2025</td><td class="num">1,250</td><td class="num">$0.27</td><td>50%</td><td class="num" style="color:var(--accent)">$0.19</td><td style="color:var(--text-dim)">—</td></tr>
+              <tr><td class="song-name">RATON JAPONES EL</td><td>MUSIXMATCH</td><td>Lyric Reprint</td><td>04–09/2025</td><td>756</td><td class="num">$0.12</td><td>50%</td><td class="num" style="color:var(--accent)">$0.09</td><td style="color:var(--text-dim)">—</td></tr>
+              <tr><td class="song-name">MI OSITO DE LANA</td><td>DEEZER</td><td>Streaming Mech</td><td>Various</td><td>534</td><td class="num">$0.06</td><td>50%</td><td class="num" style="color:var(--accent)">$0.06</td><td style="color:var(--text-dim)">—</td></tr>
+              <tr><td class="song-name">JIRAFA MARGARITA LA</td><td>MUSIXMATCH</td><td>Lyric Reprint</td><td>04–09/2025</td><td>269</td><td class="num">$0.05</td><td>50%</td><td class="num" style="color:var(--accent)">$0.04</td><td style="color:var(--text-dim)">—</td></tr>
+              <tr><td class="song-name">BANANITO CAPITAN</td><td>MUSIXMATCH</td><td>Lyric Reprint</td><td>04–06/2025</td><td>64</td><td class="num">$0.02</td><td>50%</td><td class="num" style="color:var(--accent)">$0.02</td><td style="color:var(--text-dim)">—</td></tr>
+              <tr><td class="song-name">REGALO DEL NINO DIOS</td><td>YOUTUBE MUSIC</td><td>Streaming Mech</td><td>09–10/2025</td><td>171</td><td class="num">$0.03</td><td>50%</td><td class="num" style="color:var(--accent)">$0.02</td><td style="color:var(--text-dim)">Christmas seasonal</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </details>
+  </div>
+
+  <!-- CONTEXT -->
+  <div class="section">
+    <div class="section-label">Legal &amp; Contextual Background</div>
+    <div class="context-grid">
+      <div class="context-card">
+        <h3>Publisher Structure</h3>
+        <ul>
+          <li>Spirit Latin (Prodemus) is the publishing administrator — Spirit Music Latino acquired Prodemus Colombia in 2019.</li>
+          <li>Sunflower Entertainment holds the JV rights to the Codiscos publishing catalog.</li>
+          <li>Codiscos owns the <em>Canticuentos</em> trademark and master recordings separately from composition rights.</li>
+          <li>These statements cover composition/publishing rights only.</li>
+        </ul>
+      </div>
+      <div class="context-card">
+        <h3>Colombian Law</h3>
+        <ul>
+          <li>Economic rights: life + 80 years. Moral rights: perpetual and inalienable.</li>
+          <li>Transfers of rights are limited to specific modalities, territories, and durations stated in contract.</li>
+          <li>20–25% withholding tax on royalties paid to non-residents. Verify WHT application across all Colombia payments.</li>
+          <li>SAYCO fined COP 5.3 billion (~$1.2M USD) in November 2025 for monopoly abuse and restrictive administrative practices.</li>
+        </ul>
+      </div>
+      <div class="context-card">
+        <h3>Songwriter</h3>
+        <ul>
+          <li>Marlore Anwandter (also known as Marian Margarita Johnson) — Chilean-born, arrived Colombia 1973.</li>
+          <li>Wrote 80+ Canticuentos compositions beginning 1975.</li>
+          <li>PAJARO CARPINTERO EL has documented co-writers: Luis Gomez Ramirez and Mario Hernandez.</li>
+          <li>CRAZY WITCH THE has an unknown/unlisted co-writer per statement data.</li>
+        </ul>
+      </div>
+      <div class="context-card">
+        <h3>Recommended Next Steps</h3>
+        <ul>
+          <li>Request itemized ACODEM usage data to verify flat-rate distributions against actual song plays.</li>
+          <li>Demand explanation of all future-dated periods — confirm whether these are advances or errors.</li>
+          <li>Cross-reference SAYCO directly for performance royalty history for this catalog since 2019.</li>
+          <li>Verify Sony/ATV Colombia sub-publisher agreement and confirm correct rate for Jirafa Margarita and Raton Japones.</li>
+          <li>Identify the specific Kobalt Q2 sync use (TV show, platform, compilation) and verify song selection fairness.</li>
+          <li>Confirm WHT deductions are correctly calculated and documented for all Colombia payments.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  <p>Canticuentos Colombia Royalty Forensic Analysis &nbsp;/&nbsp; Full Year 2025 &nbsp;/&nbsp; Generated 2026-04-12</p>
+  <p>This document is for internal audit purposes only. Not legal or financial advice.</p>
+</div>
+
+</body>
+</html>
